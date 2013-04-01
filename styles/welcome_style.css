@@ -1,0 +1,36 @@
+p{
+    font:15px/15px Consolas;
+}
+
+#little_title{
+    font:35px/35px Consolas;
+    position:relative;
+    left:25px;
+    top:25px;
+}
+#updown
+{
+    position:absolute;
+    width:2px;
+    height:400px;
+    right:400px;
+}
+.tools{
+    position:relative;
+    text-align:right;
+    right:15px;
+
+}
+
+#write_note{
+    font:25px/25px Consolas;
+    position:absolute;
+    left:25px;
+    top:65px;
+}
+
+#note_form{
+    position:absolute;
+    left:25px;
+    top:105px;
+}

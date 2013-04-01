@@ -1,0 +1,149 @@
+body{
+    background-color:111111;
+    height:auto; 
+}
+hr{padding-top: 1px;}
+pre{
+    position:relative;
+    left:15px;
+    line-height:130%;
+    overflow:hidden;
+    width:75%;
+    border:1px solid #c9d1d7;
+    background-color:#f1f5f9;
+    padding:10px;
+    background-color:c8c1ac;
+}
+p{
+    font: Consolas;
+    position:relative;
+    left:10px;
+    line-height:130%;
+    color:cccccc;
+}
+
+a{
+    font:20px/20px Consolas;
+}
+
+.friendly_link{
+    position:absolute;
+    top:75px;
+    right:50px; 
+    text-align:right;
+
+    font:10px/10px Consolas;
+}
+
+.cite{
+    position:relative;
+    right:50px;
+    font:15px/15px Consolas;
+    text-align:right;
+}
+
+.image_in_file{
+    text-align:center;
+}
+.web_image
+{
+    position:relative;
+    left:10%;
+}
+.file_div{
+    position:static;
+    left:15px;
+    right:425px;
+    padding:1px;
+    line-height: 130%; 
+    width:835px;}
+.normal
+{
+    font:15px/5px Consolas;
+}
+.little_title{
+    font:20px/20px Consolas;
+}
+
+.acm_title{
+    font: 25px/25px Consolas;
+}
+
+#zooks
+{
+    font:25px/25px Consolas;
+}
+
+#search{
+    text-align:right;
+}
+
+#search_input{
+    text-align:right;
+    font:20px/5px Consolas;
+}
+#updown{
+    position:fixed;
+    right:375px;
+    width:2px;
+    height:425px;;
+}
+#Multitail{
+    font:25px/25px Consolas;
+}
+
+#web{
+    font:25px/25px Consolas;
+}
+
+#bottom_p{
+    font:10px/10px Consolas;
+}
+
+#login_div
+{
+    position:fixed;
+    right:75px;
+    top:125px;
+}
+#server_function
+{
+    position:relative;
+    left:10px;
+    font: 20px/5px Consolas;
+}
+
+#login
+{text-align: right;}
+#login_input
+{
+    text-align:right;
+    font:20px/5px Consolas;
+}
+#submit{
+    
+}
+#welcome
+{
+    font:65px/45px Consolas;
+    text-align:left;
+    white-space:nowrap;
+    position:relative;
+    top:30px;
+    left:10px;
+}
+
+#regist
+{
+        text-align:right;
+}
+
+#regist_title
+{
+    text-align:right;
+    font:20px/5px Consolas;
+}
+#acm_title
+{
+    font:25px/25px Consolas;
+}

@@ -1,0 +1,92 @@
+<html xmlns="http://www.FisHinLab.com/2012/xhtml">
+    <head>
+        <title>
+            this is the FisHinLab
+        </title>
+        <link rel="stylesheet" href="/styles/index_style.css" type="text/css" />
+        <!--use chinese in html code-->
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    </head>
+    <body> 
+        <!--
+        <script type = "text/javascript" src="file:///Developer/repo/www/javascripts/index_show_file.js" ></script>
+        -->
+        <!--show the current file like www.vpsee.com does-->
+
+<p id = "welcome">welcome to FisHinLab</p>
+        
+<div class = "friendly_link" >
+    <p>go to:<a href = "http://www.openstack.org">OpenStack</a> | <a href = "http://www.topcoder.com">TopCoder</a></p>
+</div>
+
+<hr width="650" align="left" /><br />
+<div class = "file_div">
+    <p id = "zooks">详解Zooks千万用户实时通信背后的开源技术</p>
+    <p>当我们的会员从Zoosk获得的最有价值的消息时，他们可以实时进行交互。毕竟，每个用户其连接的另一端都可能在未来产生关系。这种情况的兴奋和丰富才能充分实现实时。该套件的Zoosk服务促进这些交互一般被描述为实时通信(RTC)。这些通信交付使用XMPP协议，其他流行的即时通信产品也使用该协议。Zoosk的会员在三个不同的相互作用中体验实时通信：</p>
+    <p>存在。当一个成员正在积极地连接到 Zoosk RTC的基础设施时，其公共的状态将显示为“可用”。如果他们一段时间内均处于空闲状态，它们的状态过渡到“离开”。他们关闭或断开连接的客户端应用程序时，他们的存在将自动更改为“离线”。会员还可以选择显示“隐身”的状态呈现给其他用户。这个选项让他们继续使用Zoosk服务并看到其他在线成员，但其自身不会出现在其他用户的好友列表里。</p>
+    <p>通知。重要的相互交互是在视觉上进行包装，就像有短信时有“提醒”。提醒指导用户完成如接受一个邀请、查看他们的个人资料或与其他用户相匹配等一系列事件。作为一个弹窗给用户接收，在他们的个人资料,或被视为与另一个用户。Zoosk服务利用这些通知包，告诉客户端应用程序来更新用户界面的相关标记，如其他用户发来的未读消息的数量。</p>
+    <p>信息传送。如果两个用户同时在线，他们可以在一个熟悉的“即时消息”聊天版本里相互发送消息。这些消息通过RTC基础设施来实时传送。如果用户未来使用不同的客户端应用程序来重新连接，那么消息内容将保存到一个提供未来消息历史检索的数据库中。</p>
+    <p>这些通信目前通过所有主要的Zoosk产品向用户提供。</p>
+    <p class = "little_title">RTC基础设施</p>
+    <p>这些RTC服务通过一个高性能和高可扩展性的基于XMPP的基础设施来交付。采用开源Jabber服务器Tigase，是这项聊天服务的核心。Tigase是用Java编写的，并且我们的平台团队已经创建了一些自定义的扩展，来处理Zoosk特定的业务逻辑。</p>
+    <p>Tigase部署在具有标准的8个CPU，并基于Linux的应用服务器级别的机器上。Tigase服务器在配对集群中配置，通过负载均衡管理的主要和次要节点。所有的连接在一个时间点都被指定到主节点。如果服务查询主服务器失败，负载平衡器将立即开始重新引导用户流量到辅助服务器。</p>
+    <p>这里有18个成对的集群，每个都在任何时间处理4000到8000个连接。除了套接字（socket）连接传输XMPP流量，Tigase还包括一个通过HTTP连接支持BOSH的服务</p>
+    <p>BOSH是我们允许web浏览器浏览Zoosk.com和我们的Facebook应用程序保持一个持久连接到Tigase的协议。我们的桌面应用程序和移动应用程序使用标准的TCP/IP套接字连接。</p>
+    <img src = "http://blog.fishinlab.net/images/zooks_1.jpg" class = "web_image" alt = "zooks_1"/>
+    <p>Tigase服务器通过Tigase和客户端应用程序（web浏览器、移动设备、桌面应用程序）之间的持续连接来实时跟踪用户在线状态。许多核心Zoosk的产品功能，包括搜索结果，概要视图和消息传递，需要确保这种状态是近实时得反映在所有客户端应用程序中。为了保持这种状态的Zoosk基础设施的其余部分相一致，用户在用户数据库中的记录被更新，以反映其当前的在线状态，包括其最新的联机转换的时间戳记。</p>
+    <p>用户的在线状态也存储在我们的搜索基础设施的缓存上，从而使搜索结果可以将在线状态考虑在内。Zoosk搜索功能由一个SOLR服务器层驱动。我们已经扩展每个SOLR服务器，包括ehcache实例来存储那些目前在线的用户。这个缓存的在线状态通过一个称为在线状态管理器（OSM）的专用的Tigase实例来实时更新。</p>
+    <p>OSM从主要的Tigase聊天服务器接收自定义的显示用户在线状态的XMPP数据包，然后让一个网络调用来更新ehcache实例的每一个SOLR服务器。在高峰期，大约一分钟内有8000个这样的在线状态转换。保持这种高速缓存以外的SOLR索引允许用户的状态进行实时更新，独立于主站到从站的周期性索引复制快照。用户在线状态将在查询时与查询结果结合起来，过滤还是采纳基于用户当前是否在线。搜索算法更喜欢在线用户，因为这鼓励的实时通信，并为其他用户提供更丰富的体验。</p>
+    <p>用户交互与核心RTC功能以外的Zoosk服务，也可以触发生成一个实时通知给一个连接用户的业务逻辑。例如，如果其他用户查看我们的个人资料，或接受我们发送的好友请求，我们希望能立即知道该行为。基于PHP的web应用程序将触发异步工作，打开一个网络连接到一个Tigase服务器，并将 XMPP 数据包传递给服务器，通知提供数据的自定义消息负载。该数据包被Tigase处理后，传送到当前连接用户的客户端应用程序。</p>
+    <p>用户的客户端应用程序处理这个自定义数据包，并给用户显示相应的“提醒”或更新一个“标签”。如果在用户离线时，Tigase将存储数据包，直到用户重新上线。此时，它会将自定义数据包传递到用户的客户端应用程序。</p>
+    <p class = "little_title">监控和测试</p>
+    <p>Zoosk的技术运营团队已经建立了许多方法来测试和监控RTC基础设施的运营状况，以确保其响应速度和可用性。这些测试主要从Tigase服务器收集涉及各种机制的性能数据，或模拟真实用户的互动。如果一个特定的健康检查失败或性能数据超出既定的临界值，我们的Nagios安装将发出一个警告。</p>
+    <p>Tigase监控—这是一个cron上每10分钟运行一次的脚本。它登录到所有主要的聊天服务器，测试连接和传输。它记录这些测试的结果，并发送更新到Nagios以确定是否发布警报。</p>
+    <p>Tigase性能指标—这些指标涵盖了各种内部的Tigase措施，包括次执行关键功能、消息计数，队列大小和内存消耗等。这些值每2分钟通过XMPP管理界面特设stats命令收集。这些指标然后被传递到Ganglia进行绘图。</p>
+    <p>商业智能报告—每隔一小时，都有一个脚本到各个主要的Tigase服务器检查活动连接数和信息数量。这个数据被加载到一个数据库。一个定制的Excel报告可以连接到这个数据源，并提供一个概括的数据视图和易于比较的历史趋势。</p>
+    <p>Tigase测试套件—这是一个无人控制的XMPP客户，其登录到每个Tigase服务器并模拟真实的交互。Tigase测试套件将记录功能测试的结果。</p>
+    <img src = "http://blog.fishinlab.net/images/zooks_2.jpg" class = "web_image" alt = "zooks_2"/>
+    <p class = "little_title">下一步是什么</p>
+    <p>展望未来，我们将继续积极探索新的方法来让Zoosk成员充分利用实时体验。我们本月将推出RTC支持我们的移动web应用程序。其他设备或媒介，将让Zoosk应用程序同样被实时连接。随着我们的成员连接到Zoosk应用程序的时间正在快速增加，我们计划提高我们RTC的基础功能，便于成员之间更容易互相发现和交流。</p>
+    <p class = "cite">comes from:<a href="http://www.csdn.net/article/2012-09-10/2809790-zoosk-the-engineering-behind-real-time">csdn</a></p>
+</div>
+
+
+<div id="login_div">
+    <hr id = "updown"/>
+    <form action = "/search.php" method = "post" id = "search">
+        <p id = "search_input">you can search file here</p>
+        <p class = "normal">file name:<input type="TEXT" name = "file_name" /></p>
+        <input type = "submit" name = "submit" value = "search"/>
+    </form>
+<form action="/login.php" method="post" id = "login">
+<p id = "login_input">you can login here</p>
+<p class = "normal">login name:
+<input type="text" name="name" id="name" /></p>
+<p class = "normal">login password:
+<input type="password" name="password" id="password" /></p>
+<input type="submit" name="submit" id="submit" value="login">
+
+</form><br/>
+<p id = "regist_title">you can regist here</p>
+<form action = "regist.php" method = "post" id = "regist">
+
+    <p class = "normal">user name:
+    <input type = "text" name = "name" id = "name" /></p>
+    <p class="normal">user password:
+    <input type = "password" name = "password" id = "password" /></p>
+    <input type="submit" name = "submit" value = "regist" id = "submit" /><br/>
+
+</form><br/>
+</div>
+
+<hr width="650" align="left" /><br />
+
+<div class = "file_div">
+<p class="cite"><a href = "http://blog.fishinlab.net">go back>></a></p>
+</div>
+
+<hr />
+<p align="center" id = "bottom_p">contact me:QQ350126003<p>
+<br />
+
+</body></html>

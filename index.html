@@ -1,0 +1,266 @@
+<html xmlns="http://www.FisHinLab.com/2012/xhtml">
+    <head>
+        <title>
+            this is the FisHinLab
+        </title>
+        <link rel="stylesheet" href="/styles/index_style.css" type="text/css" />
+        <!--use chinese in html code-->
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    </head>
+    <body> 
+        <!--
+        <script type = "text/javascript" src="file:///Developer/repo/www/javascripts/index_show_file.js" ></script>
+        -->
+        <!--show the current file like www.vpsee.com does-->
+
+<p id = "welcome">welcome to FisHinLab</p>
+        
+<div class = "friendly_link" >
+    <p>go to:<!--<a href = "http://www.openstack.org">OpenStack</a> | <a href = "http://www.topcoder.com">TopCoder</a> | --><a href = "http://github.com/">Search Me On GitHub</a> | <a href = "http://i.youku.com/u/id_UMTAyMjA2NTYw">VideoSpace</a></p>
+</div>
+<hr />
+<p id = "server_function">this server will provide Image Search Engine for you soon</p>
+
+<div class = "file_div">
+    <p id = "Multitail">How to Extract Float Number's Exponent on 32-bit OS</p>
+    <p>I got over a disaster interview today, the first question on written examination blocked me, you can see it below</p>
+    <p>Now we got a 32-bit operation system, and how to extract the exponent of a float number, this float followed the IEEE standard</p>
+    <pre>#include <math.h>
+#include <stdio.h>
+int main(void)
+{
+    double x, m;
+    int n;
+
+    x = 16.4;
+    m = frexp(x, &n);
+
+    printf("%f's exponent is %d\n", x, m);
+}</pre>
+    <p>Do you think this is right?</p>
+    <p>I don't. But what's the correct answer? I have no idea for now, maybe next time i could find the right answer.</p>
+</div>
+<hr width="650" align="left" /><br />
+
+<div class = "file_div">
+    <p id = "Multitail">Build Nova Environment on Ubuntu</p>
+    <p ><a href = "http://v.youku.com/v_show/id_XNTIxNjcyMjUy.html">观看视频演示＋解说</a></p>
+    <p>Even though OpenStack is found by mulitiple components, Nova: do computing job and provide high level controlling, Glance: finish the weok of virtual machines' images management, Swift: provide object-oriented storage and KeyStone: provide authorization service for clients, etc.</p>
+    <p>All right, let's talk about how to build OpenStack environment, percisly speak, how to build Nova on Ubuntu. wheny Ubuntu? It is the most nature distribution of Linux to run OpenStack on it, that's why :)</p>
+    <p>We build Nova, and how about Glance or Swift? Don't worry, they are same totally</p>
+    <p>The incredible speed of OpenStack and components maintains by different companies or orgnizaitons, so we can see lots of difference between OpenStack versions, such like diablo. Please make sure your aptitude is the lasted version</p>
+    <pre>$sudo apt-get upgrade</pre>
+    <p>Now we start installing Nova</p>
+    <pre>$sudo apt-get install -y libvirt.lib nova-api nova-network \ 
+$nova-volume nova-objectstore nova-schedule nova-compute \
+$rabbitmq-server nova-common nova-doc</pre>
+    <p>About euca2ools, it is optional, but I do not like it, rabbitmq-server provide the information push and pull module, so if you want your OpenStack work well it's nessecary(oh god how to spell this word)</p>
+    <pre>$sudo apt-get install -y euca2ools</pre>
+    <p>No matter Nova, Glance or Swift, they need specified database to store their running data, pay attention about this, the database store their generated data not the data, like virtual machines' images, used by OpenStack. Let's pick an old friend to do this, MySQL</p>
+    <pre>>create database nova;</pre>
+    <pre>>create user novadbadmin</pre>
+    <pre>>grant all privileges on nova.* to novadbadmin</pre>
+    <pre>>set password for 'novadbadmin'@'' = password('nova_secret')</pre>
+    <p>To Glance and Swift, configurations are totally same as Nova's, so let's make it short. After typing so many command lines, we could config the nova.conf file, usally, it will be stored under /etc/nova/nova.conf</p>
+    <img src = "http://blog.fishinlab.net/images/nova_0.png" height = "480" width= "640" />
+    <p>What you can see is just a model, not the true config file which you need. When config your owns, do some changes on the segments such like IP, NETWORK RANGE, SERVER, DATABASE, etc. Now let's build the nova-volume service, before you do this job, please seperate a volume for nova do object-oriented storage</p>
+    <img src = "http://blog.fishinlab.net/images/nova_1.png" height="480" width="640" />
+    <p>All right, type as below, deploy the nova-volume service </p>
+    <pre>$sudo pvcreate /dev/sda5
+$sudo vgcreate nova-volumes /dev/sda5</pre>
+    <p>Restart services which nova related and then check deloyment status </p>
+    <pre>for i in {libvirt-bin, nova-network, nova-api, nova-compute, \ 
+$nova-objectstore, nova-scheduler, nova-volume}; do sudo restart $i; done</pre>
+    <pre>nova-manage service list</pre>
+    <img src = "http://blog.fishinlab.net/images/nova_2.png" height="120" width="520" />
+    <p>when seeing the smiles, we succeed. nice!!!</p>
+</div>
+<hr width="650" align="left" /><br />
+<div class = "file_div">
+    <p id = "Multitail">Install MySQLdb Python Lib On Your Mac OS</p>
+    <p>一直认为mac平台(10.8 before)是非常适合开发人员的，安装MySQLdb却让我苦不堪言. 首先要将python和mysql安装好，python是集成在OS中的，所以直接安装mysql就好。</p>
+    <p>下载MySQLdb－python之后解压</p>
+    <pre>$tar -zxvf MySQL-python_1.2.3</pre> 
+    <p>在解压后的目录中，就如下所示了，在历史版本中还需要编辑_mysql.c文件，但是现在已经不需要了</p>
+    <img width="640" height="320" src = "http://blog.fishinlab.net/images/mysql-python_1.png" class="image_in_file" alt = "mysql_python" />
+    <p>运行一下命令安装python lib</p>
+    <pre>$sudo python setup.py build
+$sudo python setup.py install</pre>
+    <p>运行成功上面的命令之后，在本文件夹中就会出现build/目录，里面是相关的模块文件。接下来在python shell中是无法import MySQLdb的，会提示achetecture错误，编辑~/.bash_profile，添加一下字段</p>
+    <pre>$vim ~/.bash_profile
+export PATH=/usr/local/mysql/bin:$PATH
+export DYLD_LIBRARY_PAH=/usr/local/mysql/lib:$DYLD_LIBRARY_PATH
+export VERSIONER_PYTHON_PREFER_64_BIT=no                                                                |   ~                          
+export VERSIONER_PYTHON_PREFER_32_BIT=yes
+</pre>
+    <p>再次进入python shell，MySQLdb import succeed</p>
+</div>
+<hr width="650" align="left" /><br />
+<div class = "file_div">
+    <p id = "Multitail">Facebook创建Claspin 为Cache服务器装备心电图</p>
+    <p>Facebook一直以来就有一个问题，就是在网站访问的鼎峰时期，如何确保其成千上万台的Cache服务器正常的运行。如果Cache服务器出了问题，那么Facebook恐怕也会“万劫不复”，可谓一荣俱荣，一损俱损。因此Facebook创建了Claspin，形象来说，它就是Cache的健康热图。</p>
+    <p>Facebook的工程团队已经创造了这个工具，它可以帮助这位社交网络巨头确定Cache服务器在社交平台上是不是“健康”运行的。上周三Facebook的博客上发表了Claspin的详细情况。</p>
+    <p>最好的解决的办法，就是把Facebook的Cache系统转化成成一个易于理解的可视化数据，这样就可以迅速发现问题，进而能快速的解决这个问题。Facebook的工程师Sean Lynch，介绍了Claspin的设计过程。不过Facebook拥有数以万计的Memcache服务器和TAO缓存图像数据库，一旦系统陷入停顿状态，有时很难快速的找出发生故障的Cache。</p>
+    <img src = "http://blog.fishinlab.net/images/facebook.jpg" class = "image_in_file" alt = "Facebook"/>
+    <p>缓存是Facebook的基础架构中最重要的功能之一，因为它保存了最接近Web服务器的存储数据，这也是为了向用户尽可能快地提供内容。因此，Cache是一个真正的关键点，它能让用户体验变的更好。但是Lynch表示，社交网络目前还没有办法的查找到出现故障的Cache服务器。</p>
+    <p>Facebook有两个主要的缓存系统：Memcache，这是一个简单的后备高速缓存，它的智慧主要体现在客户端；TAO，它是一个图像缓存数据库，使 用的是MySQL。不过这两个系统之间，我们有成千上万张图表，其中一些被收集到显示面板上，来显示不同的延迟、请求速率和来自客户端和服务器收集的误码率统计数据。这些图表和显示面板的大部分都来自Facebook“数据存储操作”或者ODS的支持。这个工作是排在第一位的，但是随着Facebook在规模上的不断成长，一旦出现了错误，想找出哪一块出现了问题就变得越来越难。所以，我开始思考编码“tribal knowledge”，我们使用故障排除的方式，让人们更容易的评估出缓存的状态，可以一目了然。</p>
+    <p>Lynch开发的算法可以对Cache“健康”的最重要指标进行排名，进过团队的讨论，最后决定使用热图，它可以捕捉1万台服务器的运行情况，并且能在一块屏幕上显示数据改变的结果。颜色变化是30个或更多的统计数据在后台进行实时计算的结果。他称这套工具为Claspin，现在在Facebook内部广为传播，可以说这是在以工程为主导的公司成功的标志之一。</p>
+    <p>Facebook此次奉献出一个很好的工具，不禁让人想起了戴尔曾经为了提高工厂生产率的那份狂热的努力，从桌子的高度的设计到任何一个小配件安装的细节，所有的一切都考虑在内。Facebook也在做着类似的事情，Facebook开发的这套工具有助于确保它在任何时候都能对网络还有网络带来的广告收入进行优化。Facebook也在开发自己的Six Sigma或Kaizen。</p>
+    <p class = "cite">comes from:<a href="http://www.csdn.net/article/2012-09-20/2810183-Facebook-Claspin">www.csdn.com</a></p>
+</div>
+<hr width="650" align="left" /><br />
+
+<div class = "file_div">
+    <p id = "Multitail">用Multitail查看多个ipenStack日志</p></ br>
+    <p>使用 OpenStack 特别是排错的时候需要查看多个日志来定位错误，如果用 tail 会开很多 Terminal.app 程序切换查看，不方便；如果用 screen 会用 ctrl+A+N 在多个窗口切换也不方便。啥工具能在一个屏幕上跟踪多个日志文件呢？MultiTail 就是这样的一个工具，可以在一个窗口实时显示多个文件内容的更新情况，并提供了配色方案，垂直、水平分割屏幕等方便阅读和查看的功能。</p>
+    <pre>$ sudo apt-get install multitail</pre>
+    <p>在 CentOS/RHEL/Fedora 上安装 multitail：</p>
+    <pre>#wget http://pkgs.repoforge.org/multitail/multitail-5.2.9-1.el6.rf.x86_64.rpm
+#rpm -ivh multitail-5.2.9-1.el6.rf.x86_64.rpm</pre>
+    <p>运行 multitail 在一个屏幕同时监控 nova-schedule, nova-compute, nova-network 日志：</p> 
+    <pre>$multitail -s 2 /var/log/nova/nova-scheduler.log\
+/var/log/nova/nova-compute.log \
+/var/log/nova/nova-network.log</pre>
+    <p>这里为了控制截图大小不得不把窗口弄小，理想情况是把这个 Terminal 窗口投放到外接显示器上并同时显示8个日志，这样排错会很有效率～</p>
+    <img src = "http://blog.fishinlab.net/images/hi.png" class = "image_in_file" alt = "Multitail Terminal" />
+    <p class = "cite">comes from:<a href="http://www.vpsee.com">www.vpsee.com</a></p>
+</div>
+
+<hr width="650" align="left" /><br />
+
+<div class="file_div">
+    <p id = "web">web应用界面设计精彩案例</p>
+    <p>互联网的广泛使用，使人们对它的依赖性越来越强。这个虚拟世界对于我们来说已经成为一个活生生的世界。它所导致的大量改变正发生在Web应用领域，同时影响着商业运营方式。以前的老模式正向网格、基于云的模式转变。为了赶上互联网发展的步伐，我们所开发的Web应用要具有优良的品质，充当着用户界面的角色，及“捕获”企业所提供特殊服务、产品的目标用户的责任。只有它的设计满足客户的基本需求，具有简单、响应式、易使用的界面才能满足上述的目标。因此，设计者必须使用最好的Web开发与设计技巧，同时要注意几个注意事项，比如空白区域、UI加载速度优化、信息与说明的恰当展示等。无论专业人士还是初学者都会用到Web应用界面，所以近距离研究每个UI元素对于设计师来说十分重要。为了帮助设计师们完成任务，本文列举了一些优秀的Web应用界面设计。或许你可以从中获得设计自己Web应用界面的灵感。</p>
+    <p>Jamiq是一款监测工具，用来跟踪具有高排名的搜索引擎和所有语言的社交媒体平台。而FreshBooks是一款在线发票服务软件，用来帮助小企业和自由职业者进行时间追溯和发票跟踪。CrazyEgg可以帮助用户了解点击发生在网站的哪些地方。相似的，Donor Tools是一款帮助非营利组织和福利员寻找捐款与筹资目标的应用。Wufoo可帮助设计者用更快、更有趣的方式设计Web表单，它可以帮助你创建注册表单、邀请函、在线调查及联系方式表单。</p>
+    <p>总而言之，每个案列都反应了不同的需求与目标。你需要一一分析它们的设计细节，以发现哪些元素可以完美地应用到你自己的产品设计中。这个过程可能需要花费一些时间，但是值得的。
+    </p>
+    <p>为了进一步帮助你，本文还将展示更多十分酷的Web应用设计。所有有案例具有设计简单、配色方案完美、整体设计和可用性好等特点。
+</p>
+    <a href="http://postmarkapp.com">Postmark</a>
+    <a href="http://postmarkapp.com">
+        <br />    
+        <img src = "http://blog.fishinlab.net/images/web_1.jpg" class = "web_image" alt = "Postmark"/> 
+        <br />    
+    </a>
+
+    <a href="http://bufferapp.com">Buffer</a>
+    <a href="http://bufferapp.com">
+        <br />    
+        <img src = "http://blog.fishinlab.net/images/web_2.jpg" class = "web_image" alt = "bufferapp" /> 
+        <br />    
+    </a>
+
+    <a href="http://www.freshdesk.com">Freshdesk</a>
+    <a href="http://www.freshdesk.com">
+        <br />    
+        <img src = "http://blog.fishinlab.net/images/web_3.jpg" class = "web_image" alt="FreshBooks" /> 
+        <br />    
+    </a>
+
+    <a href = "http://www.mint.com">Mint</a>
+    <a href="http://www.mint.com">
+        <br />    
+        <img src = "http://blog.fishinlab.net/images/web_4.jpg" class = "web_image" alt="mint" /> 
+        <br />    
+    </a>
+
+    <a href="http://MailChimp.com">MailChimp</a>
+    <a href="http://MailChimp.com">
+        <br />    
+        <img src = "http://blog.fishinlab.net/images/web_5.jpg" class = "web_image" alt="MailChimp" /> 
+        <br />    
+    </a>
+
+    <a href="https://SkyClerk.com">SkyClerk</a>
+    <a href="https://SkyClerk.com">
+        <br />    
+        <img src = "http://blog.fishinlab.net/images/web_6.jpg" class = "web_image" alt = "SkyClerk" /> 
+        <br />    
+    </a>
+    
+    <a href="http://www.campaignmonitor.com">Campaign Monitor</a>
+    <a href="http://www/campaignmonitor.com">
+        <br />    
+        <img src = "http://blog.fishinlab.net/images/web_7.jpg" class = "web_image" alt = "Campaign" />
+        <br />    
+    </a>
+    
+    <a href="http://www.blinksale.com">Blinksale</a>
+    <a href="http://www.blinksale.com">
+        <br />    
+        <img src = "http://blog.fishinlab.net/images/web_8.jpg" class = "web_image" alt = "blinksale" /> 
+        <br />    
+    </a>
+    <p class = "cite">comes from:<a href="http://www.csdn.com">csdn</a></p>
+</div>
+<hr width="650" align="left" /><br />
+<div class = "file_div">
+    <p id = "zooks">详解Zooks千万用户实时通信背后的开源技术</p>
+    <p>当我们的会员从Zoosk获得的最有价值的消息时，他们可以实时进行交互。毕竟，每个用户其连接的另一端都可能在未来产生关系。这种情况的兴奋和丰富才能充分实现实时。该套件的Zoosk服务促进这些交互一般被描述为实时通信(RTC)。这些通信交付使用XMPP协议，其他流行的即时通信产品也使用该协议。Zoosk的会员在三个不同的相互作用中体验实时通信：</p>
+    <p>存在。当一个成员正在积极地连接到 Zoosk RTC的基础设施时，其公共的状态将显示为“可用”。如果他们一段时间内均处于空闲状态，它们的状态过渡到“离开”。他们关闭或断开连接的客户端应用程序时，他们的存在将自动更改为“离线”。会员还可以选择显示“隐身”的状态呈现给其他用户。这个选项让他们继续使用Zoosk服务并看到其他在线成员，但其自身不会出现在其他用户的好友列表里。</p>
+    <p>通知。重要的相互交互是在视觉上进行包装，就像有短信时有“提醒”。提醒指导用户完成如接受一个邀请、查看他们的个人资料或与其他用户相匹配等一系列事件。作为一个弹窗给用户接收，在他们的个人资料,或被视为与另一个用户。Zoosk服务利用这些通知包，告诉客户端应用程序来更新用户界面的相关标记，如其他用户发来的未读消息的数量。</p>
+    <p>信息传送。如果两个用户同时在线，他们可以在一个熟悉的“即时消息”聊天版本里相互发送消息。这些消息通过RTC基础设施来实时传送。如果用户未来使用不同的客户端应用程序来重新连接，那么消息内容将保存到一个提供未来消息历史检索的数据库中。</p>
+    <p>这些通信目前通过所有主要的Zoosk产品向用户提供。</p>
+    <p class = "little_title">RTC基础设施</p>
+    <p>这些RTC服务通过一个高性能和高可扩展性的基于XMPP的基础设施来交付。采用开源Jabber服务器Tigase，是这项聊天服务的核心。Tigase是用Java编写的，并且我们的平台团队已经创建了一些自定义的扩展，来处理Zoosk特定的业务逻辑。</p>
+    <p>Tigase部署在具有标准的8个CPU，并基于Linux的应用服务器级别的机器上。Tigase服务器在配对集群中配置，通过负载均衡管理的主要和次要节点。所有的连接在一个时间点都被指定到主节点。如果服务查询主服务器失败，负载平衡器将立即开始重新引导用户流量到辅助服务器。</p>
+    <p>这里有18个成对的集群，每个都在任何时间处理4000到8000个连接。除了套接字（socket）连接传输XMPP流量，Tigase还包括一个通过HTTP连接支持BOSH的服务</p>
+    <p>BOSH是我们允许web浏览器浏览Zoosk.com和我们的Facebook应用程序保持一个持久连接到Tigase的协议。我们的桌面应用程序和移动应用程序使用标准的TCP/IP套接字连接。</p>
+    <img src = "http://blog.fishinlab.net/images/zooks_1.jpg" class = "web_image" alt = "zooks_1"/>
+    <p>Tigase服务器通过Tigase和客户端应用程序（web浏览器、移动设备、桌面应用程序）之间的持续连接来实时跟踪用户在线状态。许多核心Zoosk的产品功能，包括搜索结果，概要视图和消息传递，需要确保这种状态是近实时得反映在所有客户端应用程序中。为了保持这种状态的Zoosk基础设施的其余部分相一致，用户在用户数据库中的记录被更新，以反映其当前的在线状态，包括其最新的联机转换的时间戳记。</p>
+    <p>用户的在线状态也存储在我们的搜索基础设施的缓存上，从而使搜索结果可以将在线状态考虑在内。Zoosk搜索功能由一个SOLR服务器层驱动。我们已经扩展每个SOLR服务器，包括ehcache实例来存储那些目前在线的用户。这个缓存的在线状态通过一个称为在线状态管理器（OSM）的专用的Tigase实例来实时更新。</p>
+    <p>OSM从主要的Tigase聊天服务器接收自定义的显示用户在线状态的XMPP数据包，然后让一个网络调用来更新ehcache实例的每一个SOLR服务器。在高峰期，大约一分钟内有8000个这样的在线状态转换。保持这种高速缓存以外的SOLR索引允许用户的状态进行实时更新，独立于主站到从站的周期性索引复制快照。用户在线状态将在查询时与查询结果结合起来，过滤还是采纳基于用户当前是否在线。搜索算法更喜欢在线用户，因为这鼓励的实时通信，并为其他用户提供更丰富的体验。</p>
+    <p>用户交互与核心RTC功能以外的Zoosk服务，也可以触发生成一个实时通知给一个连接用户的业务逻辑。例如，如果其他用户查看我们的个人资料，或接受我们发送的好友请求，我们希望能立即知道该行为。基于PHP的web应用程序将触发异步工作，打开一个网络连接到一个Tigase服务器，并将 XMPP 数据包传递给服务器，通知提供数据的自定义消息负载。该数据包被Tigase处理后，传送到当前连接用户的客户端应用程序。</p>
+    <p>用户的客户端应用程序处理这个自定义数据包，并给用户显示相应的“提醒”或更新一个“标签”。如果在用户离线时，Tigase将存储数据包，直到用户重新上线。此时，它会将自定义数据包传递到用户的客户端应用程序。</p>
+    <p class = "little_title">监控和测试</p>
+    <p>Zoosk的技术运营团队已经建立了许多方法来测试和监控RTC基础设施的运营状况，以确保其响应速度和可用性。这些测试主要从Tigase服务器收集涉及各种机制的性能数据，或模拟真实用户的互动。如果一个特定的健康检查失败或性能数据超出既定的临界值，我们的Nagios安装将发出一个警告。</p>
+    <p>Tigase监控—这是一个cron上每10分钟运行一次的脚本。它登录到所有主要的聊天服务器，测试连接和传输。它记录这些测试的结果，并发送更新到Nagios以确定是否发布警报。</p>
+    <p>Tigase性能指标—这些指标涵盖了各种内部的Tigase措施，包括次执行关键功能、消息计数，队列大小和内存消耗等。这些值每2分钟通过XMPP管理界面特设stats命令收集。这些指标然后被传递到Ganglia进行绘图。</p>
+    <p>商业智能报告—每隔一小时，都有一个脚本到各个主要的Tigase服务器检查活动连接数和信息数量。这个数据被加载到一个数据库。一个定制的Excel报告可以连接到这个数据源，并提供一个概括的数据视图和易于比较的历史趋势。</p>
+    <p>Tigase测试套件—这是一个无人控制的XMPP客户，其登录到每个Tigase服务器并模拟真实的交互。Tigase测试套件将记录功能测试的结果。</p>
+    <img src = "http://blog.fishinlab.net/images/zooks_2.jpg" class = "web_image" alt = "zooks_2"/>
+    <p class = "little_title">下一步是什么</p>
+    <p>展望未来，我们将继续积极探索新的方法来让Zoosk成员充分利用实时体验。我们本月将推出RTC支持我们的移动web应用程序。其他设备或媒介，将让Zoosk应用程序同样被实时连接。随着我们的成员连接到Zoosk应用程序的时间正在快速增加，我们计划提高我们RTC的基础功能，便于成员之间更容易互相发现和交流。</p>
+    <p class = "cite">comes from:<a href="http://www.csdn.net/article/2012-09-10/2809790-zoosk-the-engineering-behind-real-time">csdn</a></p>
+</div>
+
+
+<div id="login_div">
+    <hr id = "updown"/>
+    <form action = "/search.php" method = "post" id = "search">
+        <p id = "search_input">you can search file here</p>
+        <p class = "normal">file name:<input type="TEXT" name = "file_name" /></p>
+        <input type = "submit" name = "submit" value = "search"/>
+    </form>
+<form action="/login.php" method="post" id = "login">
+<p id = "login_input">you can login here</p>
+<p class = "normal">login name:
+<input type="text" name="name" id="name" /></p>
+<p class = "normal">login password:
+<input type="password" name="password" id="password" /></p>
+<input type="submit" name="submit" id="submit" value="login">
+
+</form><br/>
+<p id = "regist_title">you can regist here</p>
+<form action = "regist.php" method = "post" id = "regist">
+
+    <p class = "normal">user name:
+    <input type = "text" name = "name" id = "name" /></p>
+    <p class="normal">user password:
+    <input type = "password" name = "password" id = "password" /></p>
+    <input type="submit" name = "submit" value = "regist" id = "submit" /><br/>
+
+</form><br/>
+</div>
+
+<hr width="650" align="left" /><br />
+
+<div class = "file_div">
+<p class="cite"><a href = "http://blog.fishinlab.net/pages/2/page_2.phtml">see previece pages>></a></p>
+</div>
+
+<hr />
+<p align="center" id = "bottom_p">contact me:QQ350126003<p>
+<br />
+
+</body></html>
